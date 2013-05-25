@@ -1,0 +1,122 @@
+[
+    {
+        "tel": "0151 525 5980",
+        "name": "University Hospital Aintree",
+        "trust_postcode": "L9 7AL",
+        "trust_name": "Aintree University Hospital NHS Foundation Trust",
+        "trust_url": "http://www.aintreehospitals.nhs.uk",
+        "postcode": "L9 7AL",
+        "address": "Aintree University Hospital\nLongmoor Lane\nLiverpool\nMerseyside\nL9 7AL",
+        "lat": 53.467918124175029,
+        "trust_tel": "0151 525 5980",
+        "lng": -2.9351307950288144
+    },
+    {
+        "tel": "01535 652511",
+        "name": "Airedale General Hospital",
+        "trust_postcode": "BD20 6TD",
+        "trust_name": "Airedale NHS Foundation Trust",
+        "trust_url": "http://www.airedale-trust.nhs.uk/",
+        "postcode": "BD20 6TD",
+        "address": "Skipton Road\nSteeton\nKeighley\nWest Yorkshire\nBD20 6TD",
+        "lat": 53.898015019652348,
+        "trust_tel": "01535 652511",
+        "lng": -1.9626946101240319
+    },
+    {
+        "tel": "01729 823515",
+        "name": "Castleberg Hospital",
+        "trust_postcode": "BD20 6TD",
+        "trust_name": "Airedale NHS Foundation Trust",
+        "trust_url": "http://www.airedale-trust.nhs.uk/",
+        "postcode": "BD24 0BN",
+        "address": "Raines Road\nGiggleswick\nSettle\nNorth Yorkshire\nBD24 0BN",
+        "lat": 54.069545518474506,
+        "trust_tel": "01535 652511",
+        "lng": -2.2922075591442672
+    },
+    {
+        "tel": "01756 792233",
+        "name": "Skipton General Hospital",
+        "trust_postcode": "BD20 6TD",
+        "trust_name": "Airedale NHS Foundation Trust",
+        "trust_url": "http://www.airedale-trust.nhs.uk/",
+        "postcode": "BD23 2RJ",
+        "address": "Keighley Road\nSkipton\nNorth Yorkshire\nBD23 2RJ",
+        "lat": 53.955693648277482,
+        "trust_tel": "01535 652511",
+        "lng": -2.0190125931917819
+    },
+    {
+        "tel": "0151 228 4811",
+        "name": "Alder Hey Children's NHS Foundation Trust",
+        "trust_postcode": "L12 2AP",
+        "trust_name": "Alder Hey Children's NHS Foundation Trust",
+        "trust_url": "http://www.alderhey.com",
+        "postcode": "L12 2AP",
+        "address": "Alder Hey Hospital\nEaton Road\nWest Derby\nLiverpool\nMerseyside\nL12 2AP",
+        "lat": 53.421247016001438,
+        "trust_tel": "0151 228 4811",
+        "lng": -2.8977957488935351
+    },
+    {
+        "tel": "01784 884488",
+        "name": "Ashford Hospital",
+        "trust_postcode": "KT16 0PZ",
+        "trust_name": "Ashford and St Peter's Hospitals NHS Foundation Trust",
+        "trust_url": "http://www.ashfordstpeters.nhs.uk/",
+        "postcode": "TW15 3AA",
+        "address": "London Road\nAshford\nMiddlesex\nTW15 3AA",
+        "lat": 51.443498761926804,
+        "trust_tel": "01932 872000",
+        "lng": -0.47406760053448815
+    },
+    {
+        "tel": "02089838000",
+        "name": "King George Hospital",
+        "trust_postcode": "RM7 0AG",
+        "trust_name": "Barking, Havering and Redbridge University Hospitals NHS Trust",
+        "trust_url": "http://www.bhrhospitals.nhs.uk/",
+        "postcode": "IG3 8YB",
+        "address": "Barley Lane\nIlford\nEssex\nIG3 8YB",
+        "lat": 51.580544778460265,
+        "trust_tel": "01708 435000",
+        "lng": 0.11210691672677256
+    },
+    {
+        "tel": "01708 435000",
+        "name": "Queen's Hospital",
+        "trust_postcode": "RM7 0AG",
+        "trust_name": "Barking, Havering and Redbridge University Hospitals NHS Trust",
+        "trust_url": "http://www.bhrhospitals.nhs.uk/",
+        "postcode": "RM7 0AG",
+        "address": "Rom Valley Way\nRomford\nEssex\nRM7 0AG",
+        "lat": 51.568621747184189,
+        "trust_tel": "01708 435000",
+        "lng": 0.17891403128514924
+    },
+    {
+        "tel": "0845 111 4000",
+        "name": "Barnet Hospital",
+        "trust_postcode": "EN2 8JL",
+        "trust_name": "Barnet and Chase Farm Hospitals NHS Trust",
+        "trust_url": "http://www.bcf.nhs.uk",
+        "postcode": "EN5 3DJ",
+        "address": "Wellhouse Lane\nBarnet\nHertfordshire\nEN5 3DJ",
+        "lat": 51.650989657420737,
+        "trust_tel": "0845 111 4000",
+        "lng": -0.21554397912352147
+    },
+    {
+        "tel": "0845 111 4000",
+        "name": "Chase Farm Hospital",
+        "trust_postcode": "EN2 8JL",
+        "trust_name": "Barnet and Chase Farm Hospitals NHS Trust",
+        "trust_url": "http://www.bcf.nhs.uk",
+        "postcode": "EN2 8JL",
+        "address": "The Ridgeway\nEnfield\nMiddlesex\nEN2 8JL",
+        "lat": 51.666312200205553,
+        "trust_tel": "0845 111 4000",
+        "lng": -0.10363907577284967
+    }
+]
