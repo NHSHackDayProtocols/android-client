@@ -2,8 +2,13 @@ package com.nhshackday.trustyprotocolsandroid;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -17,34 +22,37 @@ import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.content.Context;
+
 
 public class HospitalAdapter extends BaseAdapter {
-	// http://corbett.li:4000/services/hospitalList
     public static String TAG = "HospitalTag";
     public ArrayList<String> hospitalNames;
+    private Context context;
 
-    public HospitalAdapter(InputStream is) {
-        parseHospitalJSON(is);
+    public HospitalAdapter(Context context) {
+        this.context = context;
+        parseHospitalJSON();
     }
 
-    private void parseHospitalJSON(InputStream is) {
-        String hospitalJSON = "";
-        try {			
-            hospitalJSON = JSONUtils.convertStreamToString(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void parseHospitalJSON() {
+		String hospitalJSON = "";
+		try {
+            hospitalJSON = JSONUtils.convertStreamToString(context.openFileInput("hospitals.json"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        JSONArray jsonArray = null;
-        try {
-            jsonArray = new JSONArray(hospitalJSON);
-            hospitalNames = new ArrayList<String>();
-            for (int i = 0; i < jsonArray.length(); i++) {
-                hospitalNames.add(jsonArray. getJSONObject(i).getString("name"));
-            }
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
+		JSONArray jsonArray = null;
+		try {
+			jsonArray = new JSONArray(hospitalJSON);
+			hospitalNames = new ArrayList<String>();
+			for (int i = 0; i < jsonArray.length(); i++) {
+				hospitalNames.add(jsonArray.getJSONObject(i).getString("name"));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
     }
 	
 	@Override

@@ -35,38 +35,6 @@ public class CategoryAdapter extends BaseAdapter {
 	}
 
 	private void loadGuidelines() {
-		if (!new File(context.getFilesDir(), "guideline.json").exists()) {
-			Log.d(TAG, "downloading now");
-			URL url;
-			try {
-				url = new URL(
-						"http://176.9.18.121:4000/static_test/infection.json");
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				return;
-			}
-			HttpURLConnection urlConnection = null;
-			
-			try {
-				urlConnection = (HttpURLConnection) url.openConnection();
-				InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-				FileOutputStream fos = context.openFileOutput("guideline.json", Context.MODE_PRIVATE);
-				int read = 0;
-				byte[] bytes = new byte[4096];
-				while ((read = in.read(bytes)) != -1) {
-					fos.write(bytes, 0, read);
-				}
-				fos.close();
-				Log.d(TAG, "downloading now");
-
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				urlConnection.disconnect();
-			}
-		}
-
 		String guidelineJSON = "";
 		try {
             guidelineJSON = JSONUtils.convertStreamToString(context.openFileInput("guideline.json"));
