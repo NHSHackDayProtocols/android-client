@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class HospitalAdapter extends BaseAdapter {
+	// http://corbett.li:4000/services/hospitalList
     public static String TAG = "HospitalTag";
     public ArrayList<String> hospitalNames;
 

@@ -65,7 +65,6 @@ public class CategoryAdapter extends BaseAdapter {
 			} finally {
 				urlConnection.disconnect();
 			}
-			
 		}
 
 		String guidelineJSON = "";
