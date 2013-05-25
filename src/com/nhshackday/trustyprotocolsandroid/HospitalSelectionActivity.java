@@ -4,7 +4,10 @@ import java.io.InputStream;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ListView;
 import android.app.ListActivity;
+import android.content.Intent;
 
 public class HospitalSelectionActivity extends ListActivity {
 
@@ -14,12 +17,11 @@ public class HospitalSelectionActivity extends ListActivity {
 		setContentView(R.layout.activity_hospital_selection);
         setListAdapter(new HospitalAdapter(getResources().openRawResource(R.raw.hospitals)));
 	}
-
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.hospital_selection, menu);
-		return true;
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Intent intent = new Intent(this, CategoryActivity.class);
+		startActivity(intent);
+		super.onListItemClick(l, v, position, id);
 	}
-
 }

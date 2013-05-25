@@ -18,11 +18,11 @@ import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class HospitalAdapter extends BaseAdapter {
+public class CategoryAdapter extends BaseAdapter {
     public static String TAG = "HospitalTag";
     public ArrayList<String> hospitalNames;
 
-    public HospitalAdapter(InputStream is) {
+    public CategoryAdapter(InputStream is) {
         parseHospitalJSON(is);
     }
 
