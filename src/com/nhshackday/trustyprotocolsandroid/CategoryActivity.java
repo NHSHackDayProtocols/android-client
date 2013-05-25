@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.app.ListActivity;
+import android.content.Context;
 
 
 public class CategoryActivity extends ListActivity {
@@ -13,6 +14,6 @@ public class CategoryActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hospital_selection);
-        setListAdapter(new CategoryAdapter(getResources().openRawResource(R.raw.hospitals)));
+        setListAdapter(new CategoryAdapter((Context)this));
 	}
 }
