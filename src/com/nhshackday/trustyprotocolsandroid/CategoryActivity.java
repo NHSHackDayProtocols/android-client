@@ -17,9 +17,9 @@ import android.view.Menu;
 import android.app.ListActivity;
 import android.content.Context;
 import android.widget.Toast;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ListView;
-import android.content.Intent;
 
 public class CategoryActivity extends ListActivity {
 
@@ -27,20 +27,25 @@ public class CategoryActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hospital_selection);
-		new DownloadGuidlineTask().execute();
+    Intent intent = getIntent();
+		new DownloadGuidlineTask().execute(intent.getStringExtra("hospital_name"));
 	}
 
-	private class DownloadGuidlineTask extends AsyncTask<Void, Void, Boolean> {
-		protected Boolean doInBackground(Void... v) {
-			if (new File(getFilesDir(), "guideline.json").exists()) {
+	private class DownloadGuidlineTask extends AsyncTask<String, Void, Boolean> {
+    private String url_hospital_name;
+		protected Boolean doInBackground(String... v) {
+      url_hospital_name = v[0].replace(" ", "%20");
+
+			if (new File(getFilesDir(), url_hospital_name).exists()) {
 				return true;
 			}
 
 			int read = 0;
+      Log.d("ANDY", "http://176.9.18.121:4000/services/getHospitalProtocols/" + url_hospital_name);
 			URL url = null;
 			try {
 				url = new URL(
-						"http://176.9.18.121:4000/static_test/infection.json");
+						"http://176.9.18.121:4000/services/getHospitalProtocols/" + url_hospital_name);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				return false;
@@ -51,7 +56,7 @@ public class CategoryActivity extends ListActivity {
 				urlConnection = (HttpURLConnection) url.openConnection();
 				InputStream in = new BufferedInputStream(
 						urlConnection.getInputStream());
-				FileOutputStream fos = openFileOutput("guideline.json",
+				FileOutputStream fos = openFileOutput(url_hospital_name,
 						Context.MODE_PRIVATE);
 				byte[] bytes = new byte[4096];
 				while ((read = in.read(bytes)) != -1) {
@@ -74,7 +79,7 @@ public class CategoryActivity extends ListActivity {
 				@Override
 				public void run() {
 					if (success) {
-						setListAdapter(new CategoryAdapter(CategoryActivity.this));
+						setListAdapter(new CategoryAdapter(DownloadGuidlineTask.this.url_hospital_name));
 					} else {
 						Toast.makeText(CategoryActivity.this, R.string.network_error, Toast.LENGTH_LONG).show();
 					}

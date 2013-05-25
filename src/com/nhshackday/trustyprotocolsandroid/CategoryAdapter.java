@@ -23,21 +23,22 @@ import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.content.Context;
+import android.content.Intent;
 
 public class CategoryAdapter extends BaseAdapter {
 	public static String TAG = "HospitalTag";
 	public ArrayList<String> categories;
 	private Context context;
 
-	public CategoryAdapter(Context context) {
+	public CategoryAdapter(String url_hospital_name) {
 		this.context = context;
-		loadGuidelines();
+		loadGuidelines(url_hospital_name);
 	}
 
-	private void loadGuidelines() {
+	private void loadGuidelines(String url_hospital_name) {
 		String guidelineJSON = "";
 		try {
-            guidelineJSON = JSONUtils.convertStreamToString(context.openFileInput("guideline.json"));
+            guidelineJSON = JSONUtils.convertStreamToString(context.openFileInput(url_hospital_name));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
