@@ -34,7 +34,7 @@ public class HospitalSelectionActivity extends ListActivity {
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = new Intent(this, HospitalSelectionActivity.class);
+		Intent intent = new Intent(this, CategoryActivity.class);
 		intent.putExtra("hospital_name", adapter.getHospitalNameByPosition(position));
 		startActivity(intent);
 		super.onListItemClick(l, v, position, id);
