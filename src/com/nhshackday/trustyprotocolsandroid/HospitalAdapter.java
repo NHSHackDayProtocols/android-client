@@ -74,4 +74,8 @@ public class HospitalAdapter extends BaseAdapter {
         textView.setText(hospitalNames.get(index));
         return convertView;
 	}
+
+    public String getHospitalNameByPosition(int position) {
+        return this.hospitalNames.get(position);
+    }
 }

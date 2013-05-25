@@ -80,4 +80,10 @@ public class CategoryActivity extends ListActivity {
 		}
 	}
 
+  @Override
+  protected void onListItemClick(ListView l, View v, int position, long id) {
+    Intent intent = new Intent(this, CategoryActivity.class);
+    startActivity(intent);
+    super.onListItemClick(l, v, position, id);
+  }
 }
