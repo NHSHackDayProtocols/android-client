@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.app.ListActivity;
 import android.content.Context;
 import android.widget.Toast;
+import android.view.View;
+import android.widget.ListView;
+import android.content.Intent;
 
 public class CategoryActivity extends ListActivity {
 
