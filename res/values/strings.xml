@@ -10,5 +10,6 @@
     <string name="title_activity_content">ContentActivity</string>
 
     <string name="network_error">Error while downloading content</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

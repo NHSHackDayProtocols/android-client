@@ -1,22 +1,25 @@
 package com.nhshackday.trustyprotocolsandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.webkit.WebView;
 
 public class ContentActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_content);
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.content, menu);
-		return true;
-	}
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
+        String content = intent.getStringExtra("content");
 
+        setTitle(title);
+
+        WebView webview = new WebView(this);
+        webview.loadData(content, "text/html", null);
+        setContentView(webview);
+	}
 }

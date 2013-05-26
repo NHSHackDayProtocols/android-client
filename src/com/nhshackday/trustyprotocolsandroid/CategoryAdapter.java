@@ -26,31 +26,86 @@ import android.content.Context;
 import android.content.Intent;
 
 public class CategoryAdapter extends BaseAdapter {
-	public static String TAG = "HospitalTag";
-	public ArrayList<String> categories;
-	private Context context;
+    public class ContentObj {
+        String name;
+        String idTitle;
+        String type;
+        String content;
+        public ContentObj(String name, String idTitle, String type, String content) {
+            this.name=name;
+            this.idTitle=idTitle;
+            this.type=type;
+            this.content=content;
+        }
+    }
 
-	public CategoryAdapter(String url_hospital_name) {
+	public static String TAG = "HospitalTag";
+
+	public ArrayList<ContentObj> categories;
+
+	private Context context;
+	private String path;
+
+	public CategoryAdapter(Context context, String url_hospital_name, String path) {
+		this.path = path;
+        Log.d(TAG, path);
 		this.context = context;
 		loadGuidelines(url_hospital_name);
 	}
 
 	private void loadGuidelines(String url_hospital_name) {
 		String guidelineJSON = "";
+        InputStream is = null;
+        Log.d(TAG, url_hospital_name);
 		try {
-            guidelineJSON = JSONUtils.convertStreamToString(context.openFileInput(url_hospital_name));
+            is = context.openFileInput(url_hospital_name);
+		} catch (IOException e) {
+			e.printStackTrace();
+            return;
+		}
+
+		try {
+            guidelineJSON = JSONUtils.convertStreamToString(is);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		JSONArray jsonArray = null;
 		try {
-			jsonArray = new JSONArray(guidelineJSON);
-			categories = new ArrayList<String>();
-			for (int i = 0; i < jsonArray.length(); i++) {
-				categories.add(jsonArray.getJSONObject(i).getString("title"));
-			}
+		    JSONArray currentArray = new JSONArray(guidelineJSON);
+
+            Log.d(TAG, "path " + path);
+            for(String id : path.split("/+")) {
+                if (path == "/") continue;
+
+                Log.d(TAG, "id / " + id);
+
+                for (int i = 0; i < currentArray.length(); i++) {
+                    JSONObject o = currentArray.getJSONObject(i);
+                    Log.d(TAG, "check (" + o.getString("idTitle") + "|" + id + ")");
+                    if (o.getString("idTitle").equals(id)) {
+                        currentArray = o.getJSONArray("children");
+                        Log.d(TAG, "assigned" + o.getString("idTitle") + "/" + id);
+                        break;
+                    }
+                }
+                Log.d(TAG, "found id " + id + " with l " + currentArray.length());
+                Log.d(TAG, "found toString " + currentArray.toString());
+            }
+            Log.d(TAG, "success");
+
+
+            categories = new ArrayList<ContentObj>();
+            for (int i = 0; i < currentArray.length(); i++) {
+                JSONObject o = currentArray.getJSONObject(i);
+
+                ContentObj c = new ContentObj(o.getString("title"),
+                        o.getString("idTitle"),
+                        o.getString("type"),
+                        o.getString("type").equals("information") ? o.getString("content") : "");
+                categories.add(c);
+            }
 		} catch (JSONException e) {
+            Log.d(TAG, "failure");
 			e.printStackTrace();
 		}
 	}
@@ -61,15 +116,18 @@ public class CategoryAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object getItem(int position) {
+		return (Object)categories.get(position);
 	}
 
 	@Override
 	public long getItemId(int arg0) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public String getPathForPosition(int position) {
+        return path + (path != "/" ? "/" : "") + categories.get(position).idTitle;
 	}
 
 	@Override
@@ -80,7 +138,7 @@ public class CategoryAdapter extends BaseAdapter {
 					.inflate(R.layout.hospital_row, parent, false);
 		}
 		TextView textView = (TextView) convertView.findViewById(R.id.name);
-		textView.setText(categories.get(index));
+		textView.setText(categories.get(index).name);
 		return convertView;
 	}
 }

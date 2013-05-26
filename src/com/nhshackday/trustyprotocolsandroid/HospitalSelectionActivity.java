@@ -9,6 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.view.MenuInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -31,6 +34,33 @@ public class HospitalSelectionActivity extends ListActivity {
 		setContentView(R.layout.activity_hospital_selection);
 		new DownloadHospitalsTask().execute();
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.hospital_selection, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                refresh();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void refresh() {
+        Log.d("HAS", "refresh");
+        for(File f :  getFilesDir().listFiles() ) {
+            Log.d("HAS", f.toString());
+            f.delete();
+        }
+        finish();
+    }
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -46,7 +76,7 @@ public class HospitalSelectionActivity extends ListActivity {
 				return true;
 			}
 
-			int read = 0;
+			int read = 0, content = 0;
 			URL url = null;
 			try {
 				url = new URL("http://corbett.li:4000/services/hospitalList");
@@ -64,6 +94,7 @@ public class HospitalSelectionActivity extends ListActivity {
 						Context.MODE_PRIVATE);
 				byte[] bytes = new byte[4096];
 				while ((read = in.read(bytes)) != -1) {
+                    content += read;
 					fos.write(bytes, 0, read);
 				}
 				fos.close();
@@ -73,7 +104,7 @@ public class HospitalSelectionActivity extends ListActivity {
 			} finally {
 				urlConnection.disconnect();
 			}
-			return (read > 0);
+			return (content > 0);
 		}
 
 		@Override
