@@ -143,16 +143,21 @@ public class HospitalSelectionActivity extends ListActivity {
                     JSONObject updatedHospital = new JSONObject();
                     JSONObject oldHospital = oldHospitals.getJSONObject(i);
                     JSONObject newHospital = newHospitals.getJSONObject(i);
+
+                    boolean hospitalHasBeenUpdated = false;
                     if (oldHospital.getString("name").equals(newHospital.getString("name")) &&
                             oldHospital.getLong("dateModified") < newHospital.getLong("dateModified") ) {
+hospitalHasBeenUpdated = true;
                         shouldUpdate = true;
                     }
+
                     listOfChangedGuidelines.add(newHospital.getString("name"));
                     updateHospitals += newHospital.getString("name") + ", ";
                     updatedHospital.put("name", newHospital.getString("name"));
                     updatedHospital.put("dateModified", newHospital.getLong("dateModified"));
                     updatedHospital.put("lat", newHospital.getLong("lat"));
                     updatedHospital.put("lng", newHospital.getLong("lng"));
+                    updatedHospital.put("updated", hospitalHasBeenUpdated);
                     updatedHospitals.put(updatedHospital);
                 }
 

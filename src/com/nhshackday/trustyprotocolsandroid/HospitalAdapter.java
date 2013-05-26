@@ -25,11 +25,29 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.content.Context;
 
+    import java.util.Comparator;
 
 public class HospitalAdapter extends BaseAdapter {
     public static String TAG = "HospitalTag";
-    public ArrayList<String> hospitalNames;
+    public ArrayList<Hospital> hospitalNames;
     private Context context;
+
+     
+    public class HospitalComparable implements Comparator<Hospital>{
+            @Override
+            public int compare(Hospital o1, Hospital o2) {
+                return o1.name.compareTo(o2.name);
+            }
+    }
+
+    class Hospital {
+        String name;
+        boolean updated;
+        public Hospital(String name, boolean updated) {
+            this.name = name;
+            this.updated = updated;
+        }
+    }
 
     public HospitalAdapter(Context context) {
         this.context = context;
@@ -52,12 +70,13 @@ public class HospitalAdapter extends BaseAdapter {
 			jsonArray = new JSONArray(hospitalJSON);
 			hospitalNames = new ArrayList<String>();
 			for (int i = 0; i < jsonArray.length(); i++) {
-				hospitalNames.add(jsonArray.getJSONObject(i).getString("name"));
+                JSONObject o = jsonArray.getJSONObject(i);
+				hospitalNames.add(new Hospital(o.getString("name"), o.hasExtra("updated") && o.getExtra("updated"));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-        Collections.sort(hospitalNames);
+        Collections.sort(hospitalNames, HospitalComparable);
     }
 	
 	@Override
@@ -76,6 +95,10 @@ public class HospitalAdapter extends BaseAdapter {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+public boolean isUpdated(int position) {
+
+}
 
 	@Override
 	public View getView(int index, View convertView, ViewGroup parent) {
