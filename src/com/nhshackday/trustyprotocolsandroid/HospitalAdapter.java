@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.json.JSONException;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +97,6 @@ public class HospitalAdapter extends BaseAdapter {
 		return 0;
 	}
 
-
 	@Override
 	public View getView(int index, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -104,8 +104,20 @@ public class HospitalAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.hospital_row, parent, false);
         }
         TextView textView = (TextView) convertView.findViewById(R.id.name);
-        textView.setText(hospitalNames.get(index).name);
+        Hospital h  = hospitalNames.get(index);
+        if (h.updated) {
+            textView.setText(h.name + " (updated)");
+            textView.setTextColor(Color.RED);
+        } else {
+            textView.setText(h.name);
+        }
 
+        //if (h.updated) {
+        //    Log.d("TAG", " here " + h.name + " updated " + h.updated);
+        //    textView.setTextAppearance(context, 1);
+        //} else {
+        //    textView.setTextAppearance(context, 0);
+        //}
 
         return convertView;
 	}
