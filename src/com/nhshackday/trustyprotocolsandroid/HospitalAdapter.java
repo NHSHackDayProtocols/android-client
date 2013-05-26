@@ -46,6 +46,9 @@ public class HospitalAdapter extends BaseAdapter {
 
 		JSONArray jsonArray = null;
 		try {
+            if (hospitalJSON.length() == 0) {
+                return;
+            }
 			jsonArray = new JSONArray(hospitalJSON);
 			hospitalNames = new ArrayList<String>();
 			for (int i = 0; i < jsonArray.length(); i++) {

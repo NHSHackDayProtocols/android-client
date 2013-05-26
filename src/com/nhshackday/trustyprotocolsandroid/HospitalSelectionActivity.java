@@ -1,10 +1,14 @@
 package com.nhshackday.trustyprotocolsandroid;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -100,16 +104,23 @@ public class HospitalSelectionActivity extends ListActivity {
 			}
 
 			HttpURLConnection urlConnection = null;
+
+            String hospitalJSON = "",
+                   newHospitalsJSON = "";
+
 			try {
 				urlConnection = (HttpURLConnection) url.openConnection();
-				InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-				FileOutputStream fos = openFileOutput("newHospitals.json", Context.MODE_PRIVATE);
-				byte[] bytes = new byte[4096];
-				while ((read = in.read(bytes)) != -1) {
-                    content += read;
-					fos.write(bytes, 0, read);
+	            hospitalJSON = JSONUtils.convertStreamToString(HospitalSelectionActivity.this.openFileInput("hospitals.json"));
+
+				BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+				String line = reader.readLine();
+				newHospitalsJSON = line;
+				while((line=reader.readLine())!=null){
+					newHospitalsJSON+=line;
 				}
-				fos.close();
+
+	            Log.d("TAG2", "" + newHospitalsJSON.length());
+	            Log.d("TAG", "double opening ()");
 			} catch (IOException e) {
 				e.printStackTrace();
                 Log.d("TAG", "download error()");
@@ -118,36 +129,31 @@ public class HospitalSelectionActivity extends ListActivity {
 				urlConnection.disconnect();
 			}
 
-
-            String hospitalJSON = "",
-                   newHospitalsJSON = "";
-            try {
-                hospitalJSON = JSONUtils.convertStreamToString(HospitalSelectionActivity.this.openFileInput("hospitals.json"));
-                newHospitalsJSON = JSONUtils.convertStreamToString(HospitalSelectionActivity.this.openFileInput("newHospitals.json"));
-                Log.d("TAG", "double opening ()");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
             Log.d("TAG", "should now compare");
-
             try {
                 boolean shouldUpdate = false;
                 JSONArray oldHospitals = new JSONArray(hospitalJSON),
-                          newHospitals = new JSONArray(newHospitalsJSON);
+                          newHospitals = new JSONArray(newHospitalsJSON),
+                          updatedHospitals = new JSONArray();
 
                 ArrayList<String> listOfChangedGuidelines = new ArrayList<String>();
                 String updateHospitals = "";
 
                 for (int i = 0; i < oldHospitals.length(); i++) {
+                    JSONObject updatedHospital = new JSONObject();
                     JSONObject oldHospital = oldHospitals.getJSONObject(i);
                     JSONObject newHospital = newHospitals.getJSONObject(i);
                     if (oldHospital.getString("name").equals(newHospital.getString("name")) &&
                             oldHospital.getLong("dateModified") < newHospital.getLong("dateModified") ) {
                         shouldUpdate = true;
-                        listOfChangedGuidelines.add(newHospital.getString("name"));
-                        updateHospitals += newHospital.getString("name") + ", ";
                     }
+                    listOfChangedGuidelines.add(newHospital.getString("name"));
+                    updateHospitals += newHospital.getString("name") + ", ";
+                    updatedHospital.put("name", newHospital.getString("name"));
+                    updatedHospital.put("dateModified", newHospital.getLong("dateModified"));
+                    updatedHospital.put("lat", newHospital.getLong("lat"));
+                    updatedHospital.put("lng", newHospital.getLong("lng"));
+                    updatedHospitals.put(updatedHospital);
                 }
 
                 if (shouldUpdate) {
@@ -177,7 +183,6 @@ public class HospitalSelectionActivity extends ListActivity {
 
                     mBuilder.setAutoCancel(true);
 
-
                 	NotificationManager mNotificationManager =
                 	    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 	// mId allows you to update the notification later on.
@@ -200,18 +205,30 @@ public class HospitalSelectionActivity extends ListActivity {
                     }
 
                     File hospitalsFile = new File(base, "hospitals.json");
-                    File newHospitalsFile = new File(base, "newHospitals.json");
-
-                    if (hospitalsFile.exists() && newHospitalsFile.exists()) {
-                        Log.d("TAG", "update JSONS");
-                        hospitalsFile.delete();
-                        if(!newHospitalsFile.renameTo(hospitalsFile)){ 
-                            Log.d("TAG", "error while renaming");
-                        }
-
+                    if(!hospitalsFile.delete()) {
+                        Log.d("TAG", "error while deleting");
                     }
 
-                	// move oldhospitals to new
+                    try {
+						if(!hospitalsFile.createNewFile()) {
+						    Log.d("TAG", "error while creating");
+						}
+					} catch (IOException e) {
+                        Log.d("TAG", "error while creating io");
+						e.printStackTrace();
+					}
+
+                    BufferedWriter writer;
+					try {
+						writer = new BufferedWriter(new FileWriter(hospitalsFile));
+	            		writer.write(updatedHospitals.toString());
+Log.d("T", "saving" + updatedHospitals.toString());
+                        writer.close();
+
+					} catch (IOException e) {
+                        Log.d("TAG", "error while writer");
+						e.printStackTrace();
+					}
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

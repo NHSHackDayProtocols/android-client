@@ -10,10 +10,11 @@ public class JSONUtils {
 	public static String convertStreamToString(InputStream inputStream) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         InputStream in = new BufferedInputStream(inputStream);
-        byte[] buffer = new byte[4096]; 
+        byte[] buffer = new byte[256]; 
+        int read = 0;
         try {
-            while (in.read(buffer) != -1) {
-                out.write(buffer);
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
             }
         } finally {
             out.close();
