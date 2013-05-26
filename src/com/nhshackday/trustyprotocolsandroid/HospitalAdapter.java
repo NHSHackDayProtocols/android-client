@@ -110,6 +110,7 @@ public class HospitalAdapter extends BaseAdapter {
             textView.setTextColor(Color.RED);
         } else {
             textView.setText(h.name);
+            textView.setTextColor(Color.BLACK);
         }
 
         //if (h.updated) {
