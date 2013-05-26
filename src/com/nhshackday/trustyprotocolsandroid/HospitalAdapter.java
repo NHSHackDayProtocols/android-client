@@ -68,15 +68,15 @@ public class HospitalAdapter extends BaseAdapter {
                 return;
             }
 			jsonArray = new JSONArray(hospitalJSON);
-			hospitalNames = new ArrayList<String>();
+			hospitalNames = new ArrayList<Hospital>();
 			for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject o = jsonArray.getJSONObject(i);
-				hospitalNames.add(new Hospital(o.getString("name"), o.hasExtra("updated") && o.getExtra("updated"));
+				hospitalNames.add(new Hospital(o.getString("name"), (o.has("updated") && o.getBoolean("updated"))));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-        Collections.sort(hospitalNames, HospitalComparable);
+        Collections.sort(hospitalNames, new HospitalAdapter.HospitalComparable());
     }
 	
 	@Override
@@ -96,9 +96,6 @@ public class HospitalAdapter extends BaseAdapter {
 		return 0;
 	}
 
-public boolean isUpdated(int position) {
-
-}
 
 	@Override
 	public View getView(int index, View convertView, ViewGroup parent) {
@@ -107,11 +104,13 @@ public boolean isUpdated(int position) {
             convertView = inflater.inflate(R.layout.hospital_row, parent, false);
         }
         TextView textView = (TextView) convertView.findViewById(R.id.name);
-        textView.setText(hospitalNames.get(index));
+        textView.setText(hospitalNames.get(index).name);
+
+
         return convertView;
 	}
 
     public String getHospitalNameByPosition(int position) {
-        return this.hospitalNames.get(position);
+        return this.hospitalNames.get(position).name;
     }
 }
